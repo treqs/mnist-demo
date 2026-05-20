@@ -1,0 +1,10 @@
+tea_debug.log
+wandb/
+.venv/
+.roar/
+__pycache__/
+*.pyc
+*.parquet
+*.npz
+*.pkl
+*.json

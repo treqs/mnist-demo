@@ -1,0 +1,19 @@
+# AGENTS.md
+
+Guidance for AI coding agents working in this repo.
+See https://agents.md for the convention.
+
+<!-- roar:begin (managed by `roar init agents` — edits inside this block will be overwritten) -->
+<!-- roar version: 0.2.11 -->
+## roar (provenance tracker)
+
+This project uses [roar](https://github.com/treqs/roar) to capture lineage for ML/data pipeline runs.
+
+- **Run scripts with provenance:** prefer `roar run <cmd>` over bare `<cmd>` (e.g. `roar run python train.py`).
+- **Don't modify code to use roar.** Capture is transparent. The exception: `from roar import require` at the top of a script aborts if it isn't being run under `roar run`.
+- **Clean git state is required.** `roar run` refuses to execute with uncommitted changes (including untracked files). No `--dirty` bypass. Make sure `.roar/` is in `.gitignore`.
+- **Avoid `/tmp` for workdirs.** Default config has `ignore_tmp_files = true`, which silently drops I/O under `/tmp` — a run there will show `in:0 out:0`.
+- **Inspect lineage:** `roar show <ref>`, `roar log`, `roar dag`. Add `--all` to `roar show` to disable truncation.
+- **Don't commit `.roar/`** — it's local lineage state.
+- **`roar --help` is the source of truth** for current command behavior.
+<!-- roar:end -->
