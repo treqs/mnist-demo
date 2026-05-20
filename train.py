@@ -11,13 +11,16 @@ def main():
     parser = argparse.ArgumentParser(description="Train MNIST classifier")
     parser.add_argument("--input", required=True, help="Input .npz features file")
     parser.add_argument("--output", required=True, help="Output model .pkl file")
+    parser.add_argument("--seed", type=int, default=42, help="Random seed for reproducibility")
     args = parser.parse_args()
+
+    np.random.seed(args.seed)
 
     data = np.load(args.input)
     X, y = data["X"], data["y"]
-    print(f"Training on {X.shape[0]} samples, {X.shape[1]} features")
+    print(f"Training on {X.shape[0]} samples, {X.shape[1]} features (seed={args.seed})")
 
-    config = {"solver": "saga", "max_iter": 20, "tol": 0.1, "C": 1.0}
+    config = {"solver": "saga", "max_iter": 20, "tol": 0.1, "C": 1.0, "seed": args.seed}
     wandb.init(project="mnist", config=config)
 
     model = LogisticRegression(
@@ -26,6 +29,7 @@ def main():
         warm_start=True,
         tol=0,
         C=config["C"],
+        random_state=args.seed,
         verbose=1,
     )
 
