@@ -1,0 +1,5 @@
+[filters]
+ignore_paths = [
+    "wandb",
+    "/home/ubuntu/.netrc",
+]
